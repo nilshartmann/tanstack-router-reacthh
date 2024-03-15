@@ -1,5 +1,6 @@
 import { PageButton } from "../Button.tsx";
 import { PageLabel } from "../PaginationBar.tsx";
+import { Link } from "@tanstack/react-router";
 
 type PaginationButtonProps = {
   btn: PageLabel;
@@ -11,5 +12,15 @@ export default function PaginationButton({ btn }: PaginationButtonProps) {
    *    - make sure, existing search params doesn't get lost (order by)
    *
    */
-  return <PageButton state={btn} />;
+  return (
+    <Link
+      to={"/recipes"}
+      search={(s) => ({
+        ...s,
+        page: btn.page,
+      })}
+    >
+      <PageButton state={btn} />
+    </Link>
+  );
 }

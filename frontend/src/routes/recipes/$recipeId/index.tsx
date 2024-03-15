@@ -1,7 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { fetchRecipe } from "../../../components/use-queries.ts";
+import { RecipePageContent } from "../../../components/material/RecipePageContent.tsx";
 
 export const Route = createFileRoute("/recipes/$recipeId/")({
   component: RecipePage,
+  loader: async ({ params }) => {
+    return fetchRecipe(params.recipeId);
+    // params.recipeId
+  },
 });
 
 function RecipePage() {
@@ -16,12 +22,11 @@ function RecipePage() {
     */
   const { recipeId } = Route.useParams();
 
+  const recipe = Route.useLoaderData();
+
   return (
     <div className={"space-y-8 p-8 text-4xl"}>
-      <h1>TODO! Implement me!</h1>
-      <p>
-        RecipeId from route: <code>{recipeId}</code>
-      </p>
+      <RecipePageContent recipe={recipe.recipe} />
     </div>
   );
 }

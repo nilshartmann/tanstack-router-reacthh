@@ -1,14 +1,20 @@
-import { useNavigate } from "@tanstack/react-router";
+import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import { twMerge } from "tailwind-merge";
 
 type BookmarkButtonProps = {
   recipeId: string;
 };
 
+const RecipeRoute = getRouteApi("/recipes/");
+
 export function BookmarkButton({ recipeId }: BookmarkButtonProps) {
   console.log("Rendering BookmarkButton for recipe", recipeId);
 
   const navigate = useNavigate();
+  const isBookmarked = RecipeRoute.useSearch({
+    select: (currentSearchParams) =>
+      currentSearchParams.bookmarkedRecipeIds?.includes(recipeId),
+  });
 
   /*
   TODO:
@@ -23,9 +29,21 @@ export function BookmarkButton({ recipeId }: BookmarkButtonProps) {
 
    */
 
-  const isBookmarked = false;
+  // const isBookmarked = search.bookmarkedRecipeIds?.includes(recipeId);
 
   const handleToggleBookmark = () => {
+    navigate({
+      to: "/recipes/",
+      from: "/recipes/",
+      search: (s) => ({
+        ...s,
+        bookmarkedRecipeIds: updateBookmarks(
+          s.bookmarkedRecipeIds,
+          recipeId,
+          !isBookmarked,
+        ),
+      }),
+    });
     // navigate with new Search Params: updateBookmarks(s.bookmarkedRecipeIds, recipeId, !isBookmarked)
     // - what happens if we change 'navigate.from'?
   };

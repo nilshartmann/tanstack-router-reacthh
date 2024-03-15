@@ -7,6 +7,8 @@ import IngredientList from "./IngredientsList.tsx";
 import { useGetRecipeIngredientsQuery } from "../use-queries.ts";
 import { twMerge } from "tailwind-merge";
 import LoadingIndicator from "../LoadingIndicator.tsx";
+import { Link } from "@tanstack/react-router";
+import { BookmarkButton } from "./BookmarkButton.tsx";
 
 type RecipeCardProps = {
   recipe: RecipeDto;
@@ -33,7 +35,16 @@ const RecipeCard = memo(function RecipeCard({ recipe }: RecipeCardProps) {
         - what happens if we don't specify 'params'?
 
         */}
-        <RecipeImage recipeId={recipe.id} />
+        <Link
+          to={"/recipes/$recipeId"}
+          preload={"intent"}
+          params={{
+            recipeId: recipe.id,
+          }}
+        >
+          <RecipeImage recipeId={recipe.id} />
+        </Link>
+
         <div className={"mt-8 flex justify-between text-red"}>
           <p
             className={
@@ -140,7 +151,7 @@ function RecipeImage({ recipeId }: RecipeImageProps) {
         alt="image1"
       />
       {/* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */}
-      {/*<BookmarkButton recipeId={recipeId} />*/}
+      <BookmarkButton recipeId={recipeId} />
       {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}
     </div>
   );
